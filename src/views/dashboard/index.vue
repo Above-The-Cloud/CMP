@@ -17,7 +17,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["name", "token", "role"])
+    ...mapGetters(["name", "token", "role", "avatar"])
+  },
+  created() {
+    
   }
 };
 </script>

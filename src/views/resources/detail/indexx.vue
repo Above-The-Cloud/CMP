@@ -155,10 +155,9 @@ export default {
         }
       });
       this.listLoading = true;
-      console.log("fetchDetail");
       var params = { id: this.$route.params.resid };
       getDetail(params).then(response => {
-        // console.log(this.detail)
+        
         this.detail = response.data.articles[0];
         this.detail.ctime = this.detail.ctime.substring(0, 10);
         this.detail.text = Base64.decode(this.detail.text);

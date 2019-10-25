@@ -12,15 +12,19 @@ const state = {
 
 const mutations = {
   SET_TOKEN: (state, token) => {
+    // console.log('set_token')
     state.token = token
   },
   SET_NAME: (state, name) => {
+    // console.log('set_name')
     state.name = name
   },
   SET_AVATAR: (state, avatar) => {
+    // console.log('set_avatar')
     state.avatar = avatar
   },
   SET_ROLE: (state, role) => {
+    console.log('set_role')
     state.role = role
   }
 }
