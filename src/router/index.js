@@ -36,7 +36,6 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -147,7 +146,90 @@ export const constantRoutes = [
       }
     ]
   },
-
+  {
+    path: '/',
+    component: Layout,
+    alwaysShow: true,
+    name: 'Resources',
+    meta: { title: '资源管理', icon: 'example' },
+    children: [
+      {
+        path: 'resources',
+        name: 'Resources',
+        component: () => import('@/views/resources/index'),
+        meta: { title: '图文资源', icon: 'table' }
+        // children: [
+        //   {
+        //     path: '/detail/:resid',
+        //     name: 'Detail',
+        //     component: () => import('@/views/resources/detail/indexf'),
+        //     meta: { title: '详情', icon: 'table' }
+        //   }
+        // ]
+      }
+    ]
+  },
+  {
+    path: '/detail',
+    component: Layout,
+    redirect: '/detail/:resid',
+    name: '图文资源',
+    hidden: true,
+    meta: {
+      title: '图文资源',
+      icon: 'excel'
+    },
+    children: [
+      {
+        path: '/detail/:resid',
+        component: () => import('@/views/resources/detail/indexx'),
+        name: '图文详情',
+        meta: { title: '图文详情' }
+      }
+    ]
+  },
+  {
+    path: '/check',
+    component: Layout,
+    alwaysShow: true,
+    name: 'Check',
+    meta: { title: '审核管理', icon: 'example' },
+    children: [
+      {
+        path: '/check',
+        name: 'Check',
+        component: () => import('@/views/check/index'),
+        meta: { title: '图文审核', icon: 'table' }
+      }
+    ]
+  },
+  {
+    path: '/content',
+    component: Layout,
+    redirect: '/content/context',
+    name: '/Content',
+    meta: { title: '线上内容管理', icon: 'example' },
+    children: [
+      {
+        path: 'context',
+        name: 'Context',
+        component: () => import('@/views/content/context/index'),
+        meta: { title: '图文管理', icon: 'table' }
+      },
+      {
+        path: 'comment',
+        name: 'Comment',
+        component: () => import('@/views/content/comment/index'),
+        meta: { title: '评论管理', icon: 'tree' }
+      },
+      {
+        path: 'author',
+        name: 'Author',
+        component: () => import('@/views/content/author/index'),
+        meta: { title: '作者管理', icon: 'example' }
+      }
+    ]
+  },
   {
     path: 'external-link',
     component: Layout,

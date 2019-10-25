@@ -1,11 +1,13 @@
-import { login, logout, getInfo } from '@/api/user'
+import { logout, getInfo } from '@/api/user'
+import { login } from '@/api/reallogin'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
   name: '',
-  avatar: ''
+  avatar: '',
+  role: ''
 }
 
 const mutations = {
@@ -17,17 +19,23 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ROLE: (state, role) => {
+    state.role = role
   }
 }
 
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo
+    console.log(userInfo)
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
+      login(userInfo).then(response => {
+        console.log('login', response)
         const { data } = response
+        data.token = 'admin-token'
         commit('SET_TOKEN', data.token)
+        commit('SET_ROLE', data.data.authority)
         setToken(data.token)
         resolve()
       }).catch(error => {
@@ -40,6 +48,7 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
+        console.log('getInfo', response)
         const { data } = response
 
         if (!data) {

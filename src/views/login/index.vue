@@ -21,6 +21,21 @@
         />
       </el-form-item>
 
+      <el-form-item prop="phonenumber">
+        <span class="svg-container">
+          <svg-icon icon-class="wechat" />
+        </span>
+        <el-input
+          ref="phonenumber"
+          v-model="loginForm.phonenumber"
+          placeholder="Phonenumber"
+          name="phonenumber"
+          type="text"
+          tabindex="2"
+          auto-complete="on"
+        />
+      </el-form-item>
+      
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
@@ -32,7 +47,7 @@
           :type="passwordType"
           placeholder="Password"
           name="password"
-          tabindex="2"
+          tabindex="3"
           auto-complete="on"
           @keyup.enter.native="handleLogin"
         />
@@ -40,6 +55,9 @@
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
+
+
+      
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
@@ -54,7 +72,7 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-
+import { login } from '@/api/reallogin'
 export default {
   name: 'Login',
   data() {
@@ -75,7 +93,8 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: '111111',
+        phonenumber: '15203142949'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -108,13 +127,38 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+        this.listLoading = true
+        var params = {'authority': 1}
+        params.username = this.loginForm.username
+        params.password = this.loginForm.password
+        params.phonenumber = this.loginForm.phonenumber
+        console.log(params)
+        // login(params).then(response => {
+        //   console.log(response.data)
+        //   var resdata = response.data
+        //   if(resdata.code != -1)
+        //     {
+        //       this.$router.push({ path: this.redirect || '/' })
+        //       console.log('success')
+        //     }
+        //   this.listLoading = false
+        // }).catch(() => {
+        //     this.loading = false
+        //   })
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
+          this.$store.dispatch('user/login', params).then(() => {
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(() => {
             this.loading = false
           })
+          // this.loading = true
+          // this.$store.dispatch('user/login', this.loginForm).then(() => {
+          //   this.$router.push({ path: this.redirect || '/' })
+          //   this.loading = false
+          // }).catch(() => {
+          //   this.loading = false
+          // })
         } else {
           console.log('error submit!!')
           return false
