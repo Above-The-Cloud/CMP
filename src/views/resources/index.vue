@@ -233,7 +233,7 @@ export default {
         var p = this;
         (function(i, p) {
           var params = {
-            size: 10,
+            size: 50,
             rstatus: p.filter_status[Math.floor(Number(p.role) / 2)][i]
           };
           getList(params).then(response => {

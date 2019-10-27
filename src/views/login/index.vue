@@ -108,9 +108,9 @@ export default {
     };
     return {
       loginForm: {
-        username: "qjchen",
-        password: "123456",
-        phonenumber: "15201798660",
+        username: "",
+        password: "",
+        phonenumber: "",
         role: ""
       },
       loginRules: {
