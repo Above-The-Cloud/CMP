@@ -1,4 +1,5 @@
 import request from '@/utils/myrequest'
+import CMSrequest from '@/utils/midrequest'
 import qs from 'qs';
 
 export function getDetail(params) {
@@ -18,5 +19,13 @@ export function getCategory(params) {
     method: 'post',
     data: qs.stringify(params),
     params
+  })
+}
+
+export function postMsg(data) {
+  return CMSrequest({
+    url: '/CMS/setlog/',
+    method: 'get',
+    params: data
   })
 }

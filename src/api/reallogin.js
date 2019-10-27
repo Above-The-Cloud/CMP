@@ -1,7 +1,7 @@
-import request from '@/utils/midrequest'
+import CMSrequest from '@/utils/midrequest'
 import qs from 'qs';
 export function login(data) {
-  return request({
+  return CMSrequest({
     url: '/CMS/register/',
     method: 'get',
     params: data,

@@ -7,7 +7,8 @@ const state = {
   token: getToken(),
   name: '',
   avatar: '',
-  role: ''
+  role: '',
+  username: ''
 }
 
 const mutations = {
@@ -19,13 +20,17 @@ const mutations = {
     // console.log('set_name')
     state.name = name
   },
+  SET_USERNAME: (state, username) => {
+    // console.log('set_username')
+    state.username = username
+  },
   SET_AVATAR: (state, avatar) => {
     // console.log('set_avatar')
     state.avatar = avatar
   },
   SET_ROLE: (state, role) => {
-    console.log('set_role')
     state.role = role
+    // console.log('set_role')
   }
 }
 
@@ -40,6 +45,8 @@ const actions = {
         data.token = 'admin-token'
         commit('SET_TOKEN', data.token)
         commit('SET_ROLE', data.data.authority)
+        commit('SET_USERNAME', data.data.name)
+        console.log('setusername', data.data.name)
         setToken(data.token)
         resolve()
       }).catch(error => {
@@ -75,6 +82,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
+        commit('SET_ROLE', '')
+        commit('SET_USERNAME', '')
         removeToken()
         resetRouter()
         resolve()

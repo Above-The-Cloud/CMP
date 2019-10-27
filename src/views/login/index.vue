@@ -1,7 +1,13 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      auto-complete="on"
+      label-position="left"
+    >
       <div class="title-container">
         <h3 class="title">Login Form</h3>
       </div>
@@ -35,7 +41,7 @@
           auto-complete="on"
         />
       </el-form-item>
-      
+
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
@@ -56,125 +62,125 @@
         </span>
       </el-form-item>
 
+      <!-- <el-form-item prop="role"> -->
+        <div>
+          <el-radio-group v-model="loginForm.role">
+            <el-radio :label="1">内容运营</el-radio>
+            <el-radio :label="2">管理员</el-radio>
+            <el-radio :label="4">产品运营</el-radio>
+          </el-radio-group>
+        </div>
+      <!-- </el-form-item> -->
 
-      
-
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width:100%;margin-top:30px;margin-bottom:30px;"
+        @click.native.prevent="handleLogin"
+      >Login</el-button>
 
       <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
+        <span>tip: 初次登陆请选择您的身份</span>
       </div>
-
     </el-form>
   </div>
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
-import { login } from '@/api/reallogin'
+import { validUsername } from "@/utils/validate";
+import { login } from "@/api/reallogin";
 export default {
-  name: 'Login',
+  name: "Login",
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error("Please enter the correct user name"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error("The password can not be less than 6 digits"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111',
-        phonenumber: '15203142949'
+        username: "qjchen",
+        password: "123456",
+        phonenumber: "15201798660",
+        role: ""
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [
+          { required: true, trigger: "blur", validator: validateUsername }
+        ],
+        password: [
+          { required: true, trigger: "blur", validator: validatePassword }
+        ]
       },
       loading: false,
-      passwordType: 'password',
+      passwordType: "password",
       redirect: undefined
-    }
+    };
   },
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect
+        this.redirect = route.query && route.query.redirect;
       },
       immediate: true
     }
   },
   methods: {
     showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
+      if (this.passwordType === "password") {
+        this.passwordType = "";
       } else {
-        this.passwordType = 'password'
+        this.passwordType = "password";
       }
       this.$nextTick(() => {
-        this.$refs.password.focus()
-      })
+        this.$refs.password.focus();
+      });
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-        this.listLoading = true
-        var params = {'authority': 1}
-        params.username = this.loginForm.username
-        params.password = this.loginForm.password
-        params.phonenumber = this.loginForm.phonenumber
-        console.log(params)
-        // login(params).then(response => {
-        //   console.log(response.data)
-        //   var resdata = response.data
-        //   if(resdata.code != -1)
-        //     {
-        //       this.$router.push({ path: this.redirect || '/' })
-        //       console.log('success')
-        //     }
-        //   this.listLoading = false
-        // }).catch(() => {
-        //     this.loading = false
-        //   })
-          this.loading = true
-          this.$store.dispatch('user/login', params).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
-          // this.loading = true
-          // this.$store.dispatch('user/login', this.loginForm).then(() => {
-          //   this.$router.push({ path: this.redirect || '/' })
-          //   this.loading = false
-          // }).catch(() => {
-          //   this.loading = false
-          // })
+          this.listLoading = true;
+          var params = { authority: '' };
+          params.username = this.loginForm.username;
+          params.password = this.loginForm.password;
+          params.phonenumber = this.loginForm.phonenumber;
+          params.authority = this.loginForm.role;
+          console.log(params);
+          this.loading = true;
+          this.$store
+            .dispatch("user/login", params)
+            .then(() => {
+              this.$router.push({ path: this.redirect || "/" });
+              this.loading = false;
+            })
+            .catch(() => {
+              this.loading = false;
+            });
         } else {
-          console.log('error submit!!')
-          return false
+          console.log("error submit!!");
+          return false;
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-$bg:#283443;
-$light_gray:#fff;
+$bg: #283443;
+$light_gray: #fff;
 $cursor: #fff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
@@ -217,9 +223,9 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+$bg: #2d3a4b;
+$dark_gray: #889aa4;
+$light_gray: #eee;
 
 .login-container {
   min-height: 100%;

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <dir>资源管理-图文资源</dir>
+    <el-tag>你好 {{username}} 您的身份为：{{ roles[Math.floor(Number(role) / 2)]}}</el-tag>
     <panel-group />
     <el-row :gutter="5">
       <el-col :span="4">
@@ -80,9 +80,9 @@
       <el-table-column label="作者名" width="110" align="center">
         <template slot-scope="scope">{{scope.row.author}}</template>
       </el-table-column>
-      <el-table-column label="分类" width="110" align="center">
+      <el-table-column label="状态" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.category1 }}</span>
+          <span>{{scope.row.rstatus}}: {{ status_name.get(scope.row.rstatus+"")}}</span>
         </template>
       </el-table-column>
       <el-table-column label="入库时间" width="200" align="center">
@@ -200,6 +200,13 @@ export default {
   data() {
     return {
       filter_status: [["1"], ["1001", "2003"], ["2002"]],
+      roles: ["内容运营", "管理员", "产品运营"],
+      status_name: new Map([
+        ["1", "待分类"],
+        ["1001", "待审核"],
+        ["2003", "未过审"],
+        ["2002", "在线"]
+      ]),
       videoid: "",
       videokeyword: "",
       value1: "",
@@ -209,32 +216,36 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["name", "token", "role"])
+    ...mapGetters(["name", "token", "role", "username"])
   },
   created() {
     this.fetchData();
   },
+  mounted() {
+    // this.fetchData();
+  },
   methods: {
     fetchData() {
-      var index = Math.floor(Number(this.role)) / 2;
-      for (var i in this.filter_status[index]) {  
-        var p = this.list
-        var index = Math.floor(Number(this.role) / 2)
-        var rstatus = this.filter_status[index][i]
-        (function(i, rstatus, p) {
-          var params = { size: 35, rstatus:  rstatus};
-        getList(params).then(response => {
-          for(var j in response.data.articles)
-            p.push(response.data.articles[j])
-          console.log(params);
-          console.log(p)
-          for (var i in p) {
-            p[i].author = p[i].author.substring(0, 4);
-            p[i].ctime = p[i].ctime.substring(0, 10);
-          }
-        });
-        })(i, rstatus, p);
-
+      
+      var index = Math.floor(Number(this.role) / 2)
+      console.log("fetching", index, this.filter_status)
+      for (var i in this.filter_status[index]) {
+        var p = this;
+        (function(i, p) {
+          var params = {
+            size: 10,
+            rstatus: p.filter_status[Math.floor(Number(p.role) / 2)][i]
+          };
+          getList(params).then(response => {
+            for (var j in response.data.articles)
+              p.list.push(response.data.articles[j]);
+            for (var j in p.list) {
+              p.list[j].author = p.list[j].author.substring(0, 4);
+              p.list[j].ctime = p.list[j].ctime.substring(0, 10);
+            }
+            p.listLoading = false;
+          });
+        })(i, p);
       }
     }
   }
