@@ -87,8 +87,7 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
-import { login } from "@/api/reallogin";
+import { validUsername } from '@/utils/validate'
 export default {
   name: "Login",
   data() {
@@ -98,7 +97,7 @@ export default {
       } else {
         callback();
       }
-    };
+    }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
         callback(new Error("The password can not be less than 6 digits"));

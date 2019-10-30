@@ -86,7 +86,6 @@
               :label="i"
             >{{type}}</el-radio>
           </div>
-
         </div>
         <div v-if="role_index==2" style="margin-top: 40px">
           <el-button type="text">*内容分级</el-button>
@@ -168,7 +167,7 @@ export default {
     },
     checkin_first_category(itemName) {
       console.log(itemName);
-      this.category_index = itemName
+      this.category_index = itemName;
     },
     post_form(event) {
       console.log(event);
@@ -253,6 +252,8 @@ export default {
           break;
         }
       }
+      this.$router.push({ path:'/resources'})
+
       // console.log("topic", this.topic);
       // console.log("first_category", this.first_category);
       // console.log("second_category", this.second_category);
