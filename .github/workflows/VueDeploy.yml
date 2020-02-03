@@ -13,7 +13,7 @@ jobs:
       - name: Deploy
         env:
           ACTIONS_DEPLOY_KEY: ${{ secrets.AliCloud }}
-          HOST: cmp.yiwangchunyu.wang
+          HOST: cmp.psyhack.top
           USER: root
           APP_NAME: "CMP"
         run: |
