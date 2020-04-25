@@ -226,7 +226,6 @@ export default {
   },
   methods: {
     fetchData() {
-      
       var index = Math.floor(Number(this.role) / 2)
       console.log("fetching", index, this.filter_status)
       for (var i in this.filter_status[index]) {
